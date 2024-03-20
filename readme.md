@@ -43,10 +43,16 @@ Doer
 
 ### 7. Тестирование времени
 
+\internal\core\logic\logic_test.go
+
+- TestLogicTime
+
 ### 8. Тестирование конкурентности
 
-TestLogicParallel  
-TestLogicOrder
+\internal\core\logic\logic_test.go
+
+- TestLogicParallel
+- TestLogicOrder
 
 ### 9. Тестирование конкретной ошибки
 

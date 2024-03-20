@@ -77,3 +77,15 @@ func (i Logic) DoMultiple(args ...string) error {
 	wg.Wait()
 	return nil
 }
+
+func (i Logic) SayHello() string {
+	hh := time.Now().Hour()
+	if hh < 12 {
+		return "good morning"
+	}
+	if hh > 18 {
+		return "good evening"
+	}
+	return "Hi"
+
+}

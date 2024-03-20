@@ -3,9 +3,11 @@ package logic
 import (
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/golang/mock/gomock"
 	"github.com/pircuser61/go_test/internal/core/mocks"
+	"github.com/tkuchiki/faketime"
 )
 
 func TestLogicOk(t *testing.T) {
@@ -121,5 +123,19 @@ func TestLogicOrder(t *testing.T) {
 	err := l.DoMultiple("first", "second", "third")
 	if err != nil {
 		t.Error("unexpected error", err)
+	}
+}
+
+func TestLogicTime(t *testing.T) {
+	tm := time.Date(2009, time.November, 10, 11, 0, 0, 0, time.UTC)
+	f := faketime.NewFaketimeWithTime(tm)
+	defer f.Undo()
+	f.Do()
+	l := New(nil)
+
+	want := "good morning"
+	got := l.SayHello()
+	if want != got {
+		t.Errorf("want %s got %s", want, got)
 	}
 }
