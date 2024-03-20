@@ -47,3 +47,15 @@ func (mr *MockDoerMockRecorder) Do(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Do", reflect.TypeOf((*MockDoer)(nil).Do), arg0)
 }
+
+// Finish mocks base method.
+func (m *MockDoer) Finish() {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Finish")
+}
+
+// Finish indicates an expected call of Finish.
+func (mr *MockDoerMockRecorder) Finish() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Finish", reflect.TypeOf((*MockDoer)(nil).Finish))
+}

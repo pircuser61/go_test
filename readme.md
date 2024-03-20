@@ -45,6 +45,9 @@ Doer
 
 ### 8. Тестирование конкурентности
 
+TestLogicParallel  
+TestLogicOrder
+
 ### 9. Тестирование конкретной ошибки
 
 \internal\core\logic\logic_test.go

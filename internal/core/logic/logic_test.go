@@ -95,3 +95,31 @@ func TestLogicErrType(t *testing.T) {
 		}
 	})
 }
+
+func TestLogicParallel(t *testing.T) {
+	mockController := gomock.NewController(t)
+	defer mockController.Finish()
+
+	doer := mocks.NewMockDoer(mockController)
+
+	doer.EXPECT().Finish().After(doer.EXPECT().Do("test").Times(4))
+	l := New(doer)
+	l.DoParallel("test", 4)
+}
+
+func TestLogicOrder(t *testing.T) {
+	mockController := gomock.NewController(t)
+	defer mockController.Finish()
+
+	doer := mocks.NewMockDoer(mockController)
+	gomock.InOrder(
+		doer.EXPECT().Do("first"),
+		doer.EXPECT().Do("second"),
+		doer.EXPECT().Do("third"))
+
+	l := New(doer)
+	err := l.DoMultiple("first", "second", "third")
+	if err != nil {
+		t.Error("unexpected error", err)
+	}
+}

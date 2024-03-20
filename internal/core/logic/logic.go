@@ -3,6 +3,8 @@ package logic
 import (
 	"errors"
 	"reflect"
+	"sync"
+	"time"
 
 	"github.com/pircuser61/go_test/internal/core/doer"
 )
@@ -44,4 +46,34 @@ func (i Logic) Do(in string) (string, error) {
 		return "", ErrEmptyString
 	}
 	return "ok", nil
+}
+
+func (i Logic) DoParallel(in string, threadCount int) error {
+
+	wg := sync.WaitGroup{}
+	wg.Add(4)
+	for ; threadCount > 0; threadCount-- {
+		go func() {
+			time.Sleep(time.Second)
+			i.d.Do(in)
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	i.d.Finish()
+	return nil
+}
+
+func (i Logic) DoMultiple(args ...string) error {
+	wg := sync.WaitGroup{}
+	wg.Add(len(args))
+	for ix, x := range args {
+		go func(arg string, tm int) {
+			time.Sleep(time.Duration(tm) * time.Millisecond)
+			i.d.Do(arg)
+			wg.Done()
+		}(x, ix)
+	}
+	wg.Wait()
+	return nil
 }
