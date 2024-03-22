@@ -1,7 +1,7 @@
 package doer
 
 type Doer interface {
-	Do(string) (string, error)
+	DoIt(string) (string, error)
 
 	Finish()
 }

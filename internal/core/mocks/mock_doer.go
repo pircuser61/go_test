@@ -33,19 +33,19 @@ func (m *MockDoer) EXPECT() *MockDoerMockRecorder {
 	return m.recorder
 }
 
-// Do mocks base method.
-func (m *MockDoer) Do(arg0 string) (string, error) {
+// DoIt mocks base method.
+func (m *MockDoer) DoIt(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Do", arg0)
+	ret := m.ctrl.Call(m, "DoIt", arg0)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Do indicates an expected call of Do.
-func (mr *MockDoerMockRecorder) Do(arg0 interface{}) *gomock.Call {
+// DoIt indicates an expected call of DoIt.
+func (mr *MockDoerMockRecorder) DoIt(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Do", reflect.TypeOf((*MockDoer)(nil).Do), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DoIt", reflect.TypeOf((*MockDoer)(nil).DoIt), arg0)
 }
 
 // Finish mocks base method.

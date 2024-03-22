@@ -6,8 +6,9 @@ import (
 	"time"
 
 	"github.com/golang/mock/gomock"
-	"github.com/pircuser61/go_test/internal/core/mocks"
 	"github.com/tkuchiki/faketime"
+
+	"github.com/pircuser61/go_test/internal/core/mocks"
 )
 
 func TestLogicOk(t *testing.T) {
@@ -17,7 +18,7 @@ func TestLogicOk(t *testing.T) {
 	want := "ok"
 	mockDoer := mocks.NewMockDoer(mockCtrl)
 	l := New(mockDoer)
-	mockDoer.EXPECT().Do(input).Return("result", nil).Times(1)
+	mockDoer.EXPECT().DoIt(input).Return("result", nil).Times(1)
 
 	got, err := l.Do(input)
 	if err != nil {
@@ -35,7 +36,7 @@ func TestLogicErr(t *testing.T) {
 	want := ""
 	mockDoer := mocks.NewMockDoer(mockCtrl)
 	l := New(mockDoer)
-	mockDoer.EXPECT().Do(input).Return("", errors.New("testError")).Times(1)
+	mockDoer.EXPECT().DoIt(input).Return("", errors.New("testError")).Times(1)
 
 	got, err := l.Do(input)
 	if err == nil {
@@ -54,7 +55,7 @@ func TestLogicConcreteErr(t *testing.T) {
 	wantErr := ErrEmptyString
 	mockDoer := mocks.NewMockDoer(mockCtrl)
 	l := New(mockDoer)
-	mockDoer.EXPECT().Do(input).Return("", nil).Times(1)
+	mockDoer.EXPECT().DoIt(input).Return("", nil).Times(1)
 
 	_, err := l.Do(input)
 	if err != wantErr {
@@ -70,7 +71,7 @@ func TestLogicErrType(t *testing.T) {
 	mockDoer := mocks.NewMockDoer(mockCtrl)
 	l := New(mockDoer)
 	t.Run("Validation error Empty", func(t *testing.T) {
-		mockDoer.EXPECT().Do("").Return("", nil).Times(0)
+		mockDoer.EXPECT().DoIt("").Return("", nil).Times(0)
 		_, err := l.Do("")
 		if err == nil {
 			t.Error("must be error")
@@ -83,7 +84,7 @@ func TestLogicErrType(t *testing.T) {
 	})
 
 	t.Run("Validation error Short", func(t *testing.T) {
-		mockDoer.EXPECT().Do("").Return("", nil).Times(0)
+		mockDoer.EXPECT().DoIt("").Return("", nil).Times(0)
 		_, err := l.Do("1")
 		if err == nil {
 			t.Error("must be error")
@@ -104,7 +105,7 @@ func TestLogicParallel(t *testing.T) {
 
 	doer := mocks.NewMockDoer(mockController)
 
-	doer.EXPECT().Finish().After(doer.EXPECT().Do("test").Times(4))
+	doer.EXPECT().Finish().After(doer.EXPECT().DoIt("test").Times(4))
 	l := New(doer)
 	l.DoParallel("test", 4)
 }
@@ -115,9 +116,9 @@ func TestLogicOrder(t *testing.T) {
 
 	doer := mocks.NewMockDoer(mockController)
 	gomock.InOrder(
-		doer.EXPECT().Do("first"),
-		doer.EXPECT().Do("second"),
-		doer.EXPECT().Do("third"))
+		doer.EXPECT().DoIt("first"),
+		doer.EXPECT().DoIt("second"),
+		doer.EXPECT().DoIt("third"))
 
 	l := New(doer)
 	err := l.DoMultiple("first", "second", "third")

@@ -38,7 +38,7 @@ func (i Logic) Do(in string) (string, error) {
 		return "", errors.New("input too short") //ValidationError{"input too short"}
 	}
 
-	result, err := i.d.Do(in)
+	result, err := i.d.DoIt(in)
 	if err != nil {
 		return "", err
 	}
@@ -55,7 +55,7 @@ func (i Logic) DoParallel(in string, threadCount int) error {
 	for ; threadCount > 0; threadCount-- {
 		go func() {
 			time.Sleep(time.Second)
-			i.d.Do(in)
+			i.d.DoIt(in)
 			wg.Done()
 		}()
 	}
@@ -70,7 +70,7 @@ func (i Logic) DoMultiple(args ...string) error {
 	for ix, x := range args {
 		go func(arg string, tm int) {
 			time.Sleep(time.Duration(tm) * time.Millisecond)
-			i.d.Do(arg)
+			i.d.DoIt(arg)
 			wg.Done()
 		}(x, ix)
 	}
@@ -87,5 +87,8 @@ func (i Logic) SayHello() string {
 		return "good evening"
 	}
 	return "Hi"
+}
 
+func Sum(x, y int) int {
+	return x + y
 }
