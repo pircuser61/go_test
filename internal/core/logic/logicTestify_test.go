@@ -21,7 +21,6 @@ func (i *DoerMock) DoIt(x string) (string, error) {
 func (*DoerMock) Finish() {}
 
 func TestSum(t *testing.T) {
-	t.Skip()
 	x := Sum(2, 2)
 	assert.Equal(t, x, 4)
 	require.Equal(t, x, 4)

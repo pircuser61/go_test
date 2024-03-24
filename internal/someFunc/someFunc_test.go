@@ -1,9 +1,26 @@
 package some_func
 
 import (
+	"flag"
+	"fmt"
+	"os"
 	"reflect"
 	"testing"
 )
+
+// go test is already using the flag package internally and calls flag.Parse()
+// during normal operation. Define the flag variable as global so they are
+// known before running flag.Parse().
+// USAGE: go test -run TestSum  -count 2 -xx 7
+var x = flag.Uint("xx", 4, "text")
+
+func TestMain(m *testing.M) {
+	// flag.Parse() вызывается после TestMain, если нужны кастомные флаги
+	// нужно вызвать Parse явно
+	flag.Parse()
+	fmt.Println("RUN", *x)
+	os.Exit(m.Run())
+}
 
 func TestSum(t *testing.T) {
 	x := Sum(1, 2)
@@ -20,6 +37,7 @@ func TestSumTable(t *testing.T) {
 		y    int
 		want int
 	}
+
 	testSet := []testItem{
 		{"positive", 1, 2, 3},
 		{"zero", 0, 0, 0},
